@@ -80,6 +80,13 @@ npm run swa
 
 ブラウザで `http://localhost:4280` にアクセス。
 
+ローカルでは擬似認証画面（Azure Static Web Apps Auth）が表示されます。
+**Username** に許可ドメインのメールアドレスを入力して **Login** を押してください。
+
+```
+test@certify.jp
+```
+
 ## Azure リソース構成
 
 | リソース | 名前 | 備考 |
