@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "4280:4280"
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - app-node-modules:/app/node_modules
+      - api-node-modules:/app/api/node_modules
+    environment:
+      - AZURE_COSMOS_CONNECTION_STRING=${AZURE_COSMOS_CONNECTION_STRING}
+      - ALLOWED_EMAIL_DOMAIN=${ALLOWED_EMAIL_DOMAIN}
+      - VITE_ALLOWED_EMAIL_DOMAIN=${VITE_ALLOWED_EMAIL_DOMAIN}
+
+volumes:
+  app-node-modules:
+  api-node-modules:

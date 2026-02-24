@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "swa": "swa start http://localhost:5173 --run \"npm run dev\" --api-location api"
+    "swa": "swa start http://localhost:5173 --run \"npm run dev\" --api-location api",
+    "swa:docker": "swa start http://localhost:5173 --run \"npm run dev -- --host 0.0.0.0\" --api-devserver-url http://localhost:7071"
   },
   "dependencies": {
     "react": "^18.3.1",

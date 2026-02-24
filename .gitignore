@@ -7,11 +7,10 @@ api/package-lock.json
 dist/
 
 # Local environment files (NEVER commit these)
-api/local.settings.json
-!api/local.settings.json.example
 .env
 .env.local
 .env.*.local
+api/local.settings.json
 
 # SWA CLI
 .swa/
