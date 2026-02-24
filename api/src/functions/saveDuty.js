@@ -2,7 +2,7 @@
 'use strict'
 
 const { app } = require('@azure/functions')
-const { TableClient } = require('@azure/data-tables')
+const { CosmosClient } = require('@azure/cosmos')
 
 /**
  * SWA の x-ms-client-principal ヘッダーをデコードする。
@@ -120,32 +120,32 @@ app.http('saveDuty', {
       }
     }
 
-    // ── Azure Table Storage へ保存 ──
-    const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING
+    // ── Azure Cosmos DB へ保存 ──
+    const connectionString = process.env.AZURE_COSMOS_CONNECTION_STRING
     if (!connectionString) {
-      context.error('saveDuty: AZURE_STORAGE_CONNECTION_STRING 環境変数が未設定です')
+      context.error('saveDuty: AZURE_COSMOS_CONNECTION_STRING 環境変数が未設定です')
       return {
         status: 500,
-        jsonBody: { error: 'Server configuration error: AZURE_STORAGE_CONNECTION_STRING not set' },
+        jsonBody: { error: 'Server configuration error: AZURE_COSMOS_CONNECTION_STRING not set' },
       }
     }
 
     const savedAt = new Date().toISOString()
     const savedBy = principal.userDetails || principal.userId || 'unknown'
-    // RowKey: タイムスタンプ降順ソート用に反転値を使用（最新が先頭になる）
-    const rowKey = String(Date.now())
+    const id = String(Date.now())
 
-    const tableClient = TableClient.fromConnectionString(connectionString, 'DutySchedule')
+    const client = new CosmosClient(connectionString)
+    const container = client.database('inner-duty-db').container('DutySchedule')
 
-    await tableClient.createEntity({
+    await container.items.create({
+      id,
       partitionKey: 'schedule',
-      rowKey,
       dutiesJson: JSON.stringify(duties),
       savedBy,
       savedAt,
     })
 
-    context.log(`saveDuty: Table Storage に保存しました。rowKey=${rowKey}, savedBy=${savedBy}`)
+    context.log(`saveDuty: Cosmos DB に保存しました。id=${id}, savedBy=${savedBy}`)
     return {
       status: 200,
       jsonBody: { success: true, savedAt },

@@ -16,6 +16,12 @@ api/local.settings.json
 # SWA CLI
 .swa/
 
+# Azurite local storage files
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+AzuriteConfig
+
 # Editor
 .vscode/
 .idea/

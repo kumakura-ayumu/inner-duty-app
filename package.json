@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "swa": "swa start http://localhost:5173 --run \"npm run dev\" --api-devserver-url http://localhost:7071"
+    "swa": "swa start http://localhost:5173 --run \"npm run dev\" --api-location api"
   },
   "dependencies": {
     "react": "^18.3.1",
