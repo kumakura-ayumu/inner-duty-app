@@ -43,7 +43,21 @@ cp .env.example .env
 docker-compose up
 ```
 
+> **初回起動について**
+> コンテナ起動時に `npm install` が自動実行されるため、初回は数分かかります。
+> 2回目以降は node_modules がボリュームにキャッシュされるため、すぐに起動します。
+
 ブラウザで `http://localhost:4280` にアクセス。
+
+### 終了方法
+
+| コマンド | 用途 |
+|---|---|
+| `Ctrl+C` | 作業を一時中断してすぐ再開する場合 |
+| `docker-compose down` | 今日の作業が終わり、コンテナを片付けたい場合 |
+| `docker-compose down -v` | node_modules も含めて完全リセットしたい場合 |
+
+> `docker-compose down` はコンテナを削除しますが node_modules ボリュームは残るため、次回 `docker-compose up` は速く起動します。
 
 ローカルでは擬似認証画面（Azure Static Web Apps Auth）が表示されます。
 **Username** に許可ドメインのメールアドレスを入力して **Login** を押してください。
@@ -51,6 +65,16 @@ docker-compose up
 ```
 test@certify.jp
 ```
+
+## GitHub Codespaces での開発
+
+リポジトリに `.devcontainer/devcontainer.json` が含まれているため、GitHub Codespaces でそのまま開発できます。
+
+1. GitHub リポジトリ →「**Code**」→「**Codespaces**」→「**New codespace**」
+2. コンテナが自動ビルドされ、VS Code が起動
+3. ポート `4280` が自動転送されるのでブラウザでアクセス可能
+
+`.env` に相当する環境変数は、GitHub リポジトリの **Settings > Secrets and variables > Codespaces** に登録してください。
 
 ## Azure リソース構成
 
@@ -99,6 +123,15 @@ cp .env.example .env
 ```bash
 docker-compose down
 docker-compose up
+```
+
+---
+
+### node_modules を完全にリセットしたい
+
+```bash
+docker-compose down -v   # ボリュームごと削除
+docker-compose up --build
 ```
 
 ---

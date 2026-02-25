@@ -1,5 +1,11 @@
 #!/bin/sh
-# 環境変数から api/local.settings.json を生成する（func start が読み込む）
+
+# ① npm install（Runtime Install - ビルド時ではなく起動時に実行）
+echo "Installing dependencies..."
+npm install
+npm install --prefix api
+
+# ② 環境変数から api/local.settings.json を生成（func start が読み込む）
 cat > /app/api/local.settings.json << EOF
 {
   "IsEncrypted": false,
@@ -12,7 +18,7 @@ cat > /app/api/local.settings.json << EOF
 }
 EOF
 
-# Azurite（Azure Storage エミュレーター）をバックグラウンドで起動
+# ③ Azurite（Azure Storage エミュレーター）をバックグラウンドで起動
 azurite --silent --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 &
 
 # Azurite が port 10000 で起動するまで待機
@@ -22,7 +28,7 @@ while ! nc -z localhost 10000; do
 done
 echo "Azurite is ready"
 
-# Azure Functions をバックグラウンドで起動
+# ④ Azure Functions をバックグラウンドで起動
 (cd /app/api && func start) &
 
 # func が port 7071 で起動するまで待機
@@ -32,4 +38,5 @@ while ! nc -z localhost 7071; do
 done
 echo "Azure Functions is ready"
 
-exec "$@"
+# ⑤ SWA CLI を起動
+exec npm run swa:docker

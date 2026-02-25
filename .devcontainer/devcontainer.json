@@ -1,0 +1,16 @@
+{
+  "name": "inner-duty-app",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "overrideCommand": false,
+  "forwardPorts": [4280, 5173, 7071],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-azurestaticwebapps",
+        "ms-azuretools.vscode-azurefunctions"
+      ]
+    }
+  }
+}
