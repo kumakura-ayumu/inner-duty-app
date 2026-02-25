@@ -40,6 +40,10 @@ cp .env.example .env
 ### 起動方法
 
 ```bash
+# 初回（イメージが存在しない場合・Dockerfile 変更後）
+docker-compose up --build
+
+# 2回目以降
 docker-compose up
 ```
 
